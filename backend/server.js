@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.route.js";
 import productRoutes from "./routes/product.route.js";
 import cartRoutes from "./routes/cart.route.js";
 import couponRoutes from "./routes/coupon.route.js";
+import paymentRoutes from "./routes/payment.route.js";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -22,6 +23,7 @@ app.use("/api/auth", authRoutes); //Authentication routes
 app.use("/api/product", productRoutes); //Product routes
 app.use("/api/cart", cartRoutes); //Cart routes
 app.use("/api/coupons", couponRoutes); //Coupon routes
+app.use("/api/payments", paymentRoutes); //Payment routes
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

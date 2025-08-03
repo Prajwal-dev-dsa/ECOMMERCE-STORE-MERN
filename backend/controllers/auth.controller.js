@@ -184,3 +184,14 @@ export const refreshToken = async (req, res) => {
       .json({ message: "Something went wrong", error: error.message });
   }
 };
+
+export const getProfile = async (req, res) => {
+  try {
+    res.status(200).json(req.user); // return user profile as we will get user details from protectedRoute if user is authenticated
+  } catch (error) {
+    console.error("Error fetching profile:", error.message);
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};

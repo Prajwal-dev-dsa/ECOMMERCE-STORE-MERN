@@ -24,7 +24,7 @@ const storeRefreshToken = async (userId, refreshToken) => {
       60 * 60 * 24 * 7
     ); // Store for 7 days
   } catch (error) {
-    console.error("Error storing refresh token in Redis:", error);
+    console.error("Error storing refresh token in Redis:", error?.message);
   }
 };
 
@@ -76,9 +76,7 @@ export const signup = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -114,9 +112,7 @@ export const login = async (req, res) => {
     }
   } catch (error) {
     console.error("Login error:", error.message);
-    res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -139,9 +135,7 @@ export const logout = (req, res) => {
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.error("Error during logout:", error);
-    res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -179,9 +173,7 @@ export const refreshToken = async (req, res) => {
     res.status(200).json({ message: "Token refreshed", accessToken });
   } catch (error) {
     console.error("Error refreshing token:", error);
-    res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -190,8 +182,6 @@ export const getProfile = async (req, res) => {
     res.status(200).json(req.user); // return user profile as we will get user details from protectedRoute if user is authenticated
   } catch (error) {
     console.error("Error fetching profile:", error.message);
-    res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };

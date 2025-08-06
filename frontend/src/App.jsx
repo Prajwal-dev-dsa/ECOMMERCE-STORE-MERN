@@ -1,11 +1,24 @@
-import React from "react";
+import React, { use, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { useUserStore } from "./stores/useUserStore";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
+  const { user, checkAuth, checkingAuth } = useUserStore(); // destructuring user, checkAuth, and checkingAuth from useUserStore
+
+  // Check authentication status on initial load
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  // If checkingAuth is true, show a loading spinner. This prevents rendering the app before we know the user's auth status. This is important to avoid flickering or showing protected routes before the auth status is confirmed.
+  if (checkingAuth) return <LoadingSpinner />;
+
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
       {/* Background gradient */}
@@ -17,10 +30,20 @@ function App() {
       <div className="relative z-50 pt-20">
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/"
+            element={user ? <HomePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/signup"
+            element={!user ? <SignUpPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" />}
+          />
         </Routes>
+        <Toaster />
       </div>
     </div>
   );
